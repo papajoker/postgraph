@@ -1,0 +1,55 @@
+{% include 'mcp_header.html' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
+<style>
+    #top10 { margin:1em auto; font-size: .9em; }
+    #top10 td { padding:0.1em 1em; text-align:right; }
+</style>
+
+<h2>{{ TOP_TITLE }}</h2>
+
+<div class="panel">
+    <canvas id="myChart" width="400px" height="350"></canvas>
+	
+    <form method="post" id="mcp" action="{U_POST_ACTION}">
+        <label>{{ lang('SELECT_MONTH') }}{L_COLON}</label>
+        <input name="ladate" type="date" {% if LADATE %}value="{{ LADATE }}"{% endif %}/>
+        {S_FORM_TOKEN}
+        <input type ="submit" class="button1"/>
+    </form>
+
+</div>
+<div class="panel">
+    <div class="inner">
+        <table id="top10">
+            <!-- BEGIN posts -->
+            <tr>
+                <td>{{ posts.DAY }}</td>
+                <td><b>{{ posts.NB }}</b></td>
+                <td>{{ posts.POURCENT }} %</td>
+                <td>{{ posts.TOTAL }}</td>
+            </tr>
+            <!-- END posts -->
+        </table>
+    </div>
+</div>
+{% include 'mcp_footer.html' %}
+<script>
+    var ctx = document.getElementById("myChart");
+    var myLineChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [ <!-- BEGIN posts --> "{{ posts.DAY }}", <!-- END posts -->],
+        datasets: [{
+            label: '{{ lang('LABEL_POST') }}',
+            backgroundColor: 'rgba(50,100,200,.5)',
+            data: [<!-- BEGIN posts --> {{ posts.NB }}, <!-- END posts -->]
+        },{
+            label: '{{ lang('LABEL_POSTER') }}',
+            type: 'line',
+            backgroundColor: 'rgba(50,200,100,1)',
+            data: [<!-- BEGIN posters --> {{ posters.NB }}, <!-- END posters -->]
+        }
+        ]
+    }
+});
+</script>

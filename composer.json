@@ -1,9 +1,9 @@
 {
     "name": "papajoke/postgraph",
     "type": "phpbb-extension",
-    "description": "posters/posts charts",
-    "homepage": "",
-    "version": "1.0.0",
+    "description": "posters/posts chart MCP",
+    "homepage": "https://github.com/papajoker/postgraph",
+    "version": "0.9.0",
     "time": "2017-10-14",
     "license": "GPL-2.0",
     "authors": [
@@ -19,9 +19,9 @@
         "composer/installers": "~1.0"
     },
     "extra": {
-        "display-name": "postGraph PCM",
+        "display-name": "postGraph MCP",
         "soft-require": {
-            "phpbb/phpbb": ">=3.1.4,<3.2.0@dev"
+            "phpbb/phpbb": ">=3.2.0"
         }
     }
 }

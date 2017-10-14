@@ -1,6 +1,6 @@
 # postGraph PCM
 
-![alt screen](https://lut.im/noTCxdKh6Z/acapture_1014_162636.png)
+![alt screen](https://raw.githubusercontent.com/papajoker/postgraph/master/acapture_1014_162636.png)
 
 ## Installation
 

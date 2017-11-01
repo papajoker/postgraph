@@ -31,6 +31,7 @@ class main_module
 
         $condition="from_unixtime(post_time) > DATE_SUB(CURDATE(), interval 30 DAY)";
         $title = "30 ".$user->lang('LAST_DAYS');
+        $days = date('t'); 
         
         if ($request->is_set_post('submit')) {
             if (!check_form_key('papajoke/postgraph')) {
@@ -39,11 +40,13 @@ class main_module
         }
 
         $ladate = request_var('ladate', date("Y-m-d"));
+        
         if ($ladate !='')
         {
             $dt = new \DateTime($ladate);
             $year = (int)$dt->format('Y'); //substr($ladate,0,4);
             $month = (int)$dt->format('n'); //substr($ladate,5,2);
+            $days= $dt->format('t');
             $condition="YEAR(from_unixtime(post_time))=".$year." AND MONTH(from_unixtime(post_time))=".$month;
             $title = ": ".$dt->format('F')." ".$year;
             $template->assign_vars(array(
@@ -100,8 +103,42 @@ class main_module
                 'POURCENT' => $row['pourcentage'],
             ));
         }
-        $db->sql_freeresult($result);        
+        $db->sql_freeresult($result);  
+
+        $sql="SELECT DAY(from_unixtime(user_regdate)) as day, 
+        COUNT(DISTINCT(user_id)) as nb
+        FROM ".USERS_TABLE."
+        WHERE 
+            ".str_replace('post_time','user_regdate',$condition)."
+        GROUP BY day
+        ORDER BY day ASC
+        ";
+
+        $result = $db->sql_query($sql);
+        $array= $this->setArray($days);
+        while ($row = $db->sql_fetchrow($result)) 
+        {
+            $array[$row['day']]=array(
+                'DAY' => $row['day'],
+                'NB' => $row['nb'],
+            );
+        }
+        //$template->assign_block_vars('nusers', $array);
+        foreach($array as $item){
+            $template->assign_block_vars('nusers', $item);
+        }
+        $db->sql_freeresult($result);  
+        //var_dump($array);
 
         $template->assign_var('U_POST_ACTION', $this->u_action);
+    }
+
+    private function setArray($days){
+        $return = array();
+        for ($i=1; $i<=$days; $i++){
+            $return[$i]= array('DAY'=>$i,'NB'=>0);
+        }
+        //unset($array[0]);
+        return $return;
     }
 }

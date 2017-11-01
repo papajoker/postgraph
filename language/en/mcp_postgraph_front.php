@@ -13,6 +13,7 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, array(
     'LABEL_POST'           => 'post by day',
     'LABEL_POSTER'     => 'poster by day',
+    'LABEL_USER'     => 'new users by day',
     'SELECT_MONTH'  => 'Select a mouth',
     'LAST_DAYS'     => 'last days',
 ));
